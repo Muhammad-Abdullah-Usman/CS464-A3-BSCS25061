@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject winPanel;
     [SerializeField] GameObject losePanel;
     [SerializeField] int targetScore = 5;
+    [SerializeField] bool requireExit;
     [SerializeField] int startingLives = 3;
 
     int score;
@@ -57,7 +58,7 @@ public class GameManager : MonoBehaviour
         score += amount;
         UpdateUI();
 
-        if (score >= targetScore)
+        if (score >= targetScore && !requireExit)
             EndGame(winPanel);
     }
 
@@ -101,6 +102,12 @@ public class GameManager : MonoBehaviour
         gameEnded = true;
         panel.SetActive(true);
         Time.timeScale = 0f;
+    }
+
+    public void TryExit()
+    {
+        if (IsPlaying && requireExit && score >= targetScore)
+            EndGame(winPanel);
     }
 
     public void Restart()
