@@ -109,4 +109,15 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(
             SceneManager.GetActiveScene().buildIndex);
     }
+
+    public void NextLevel()
+    {
+        int next = SceneManager.GetActiveScene().buildIndex + 1;
+
+        if (next >= SceneManager.sceneCountInBuildSettings)
+            next = 0;
+
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(next);
+    }
 }
