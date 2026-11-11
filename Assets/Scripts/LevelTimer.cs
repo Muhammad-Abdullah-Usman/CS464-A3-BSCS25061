@@ -5,6 +5,7 @@ public class LevelTimer : MonoBehaviour
 {
     [SerializeField] TMP_Text timerText;
     [SerializeField] float timeLimit = 35f;
+    [SerializeField] bool survivalMode;
 
     float remaining;
     bool expired;
@@ -21,17 +22,29 @@ public class LevelTimer : MonoBehaviour
             return;
 
         remaining = Mathf.Max(0f, remaining - Time.deltaTime);
-        ShowTime();
 
         if (remaining <= 0f)
         {
             expired = true;
-            GameManager.Instance.TimeExpired();
+
+            if (survivalMode)
+                GameManager.Instance.SurvivalFinished();
+            else
+                GameManager.Instance.TimeExpired();
         }
+
+        ShowTime();
     }
 
     void ShowTime()
     {
-        timerText.text = $"Time: {Mathf.CeilToInt(remaining)}";
+        if (expired && survivalMode)
+        {
+            timerText.text = "Survival complete";
+            return;
+        }
+
+        string label = survivalMode ? "Survive" : "Time";
+        timerText.text = $"{label}: {Mathf.CeilToInt(remaining)}";
     }
 }

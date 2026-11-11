@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] int targetScore = 5;
     [SerializeField] bool requireExit;
     [SerializeField] int startingLives = 3;
+    [SerializeField] bool requireSurvival;
+    bool survivalComplete;
 
     int score;
     int lives;
@@ -49,6 +51,12 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
             Restart();
+
+        if (IsPlaying && requireSurvival && survivalComplete &&
+            score >= targetScore && !requireExit)
+        {
+            EndGame(winPanel);
+        }
     }
 
     public void AddScore(int amount)
@@ -58,7 +66,7 @@ public class GameManager : MonoBehaviour
         score += amount;
         UpdateUI();
 
-        if (score >= targetScore && !requireExit)
+        if (score >= targetScore && !requireExit && !requireSurvival)
             EndGame(winPanel);
     }
 
@@ -132,5 +140,10 @@ public class GameManager : MonoBehaviour
     {
         if (!gameEnded)
             EndGame(losePanel);
+    }
+
+    public void SurvivalFinished()
+    {
+        survivalComplete = true;
     }
 }
