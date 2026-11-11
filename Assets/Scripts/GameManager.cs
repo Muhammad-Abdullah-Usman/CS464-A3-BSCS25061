@@ -127,4 +127,10 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene(next);
     }
+
+    public void TimeExpired()
+    {
+        if (!gameEnded)
+            EndGame(losePanel);
+    }
 }
